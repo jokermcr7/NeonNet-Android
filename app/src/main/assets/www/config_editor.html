@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>جزئیات و ویرایش کانفیگ - نئون‌نت</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #0b0e15; font-family: system-ui, -apple-system, sans-serif; }
+    .neon-glow { box-shadow: 0 0 15px rgba(0, 240, 255, 0.35); }
+    .neon-border { border-color: #00f0ff; }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 pb-24 select-none">
+  <!-- هدر بالای صفحه -->
+  <header class="flex items-center justify-between py-2 px-1">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400">
+        <i class="fa-regular fa-bell"></i>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="text-right">
+        <h1 class="text-base font-bold text-white tracking-wide">نئون‌نت</h1>
+        <p class="text-xs text-cyan-400/80">Config Editor</p>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-cyan-950/80 border border-cyan-400/60 flex items-center justify-center text-cyan-300">
+        <i class="fa-solid fa-sliders"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col gap-4 mt-2 max-w-sm mx-auto w-full">
+    <!-- تیتر و دکمه ذخیره بالا -->
+    <div class="flex items-center justify-between px-1">
+      <button class="bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,240,255,0.4)] transition-all active:scale-95">
+        <i class="fa-solid fa-check"></i>
+        <span>ذخیره تغییرات</span>
+      </button>
+
+      <div class="flex items-center gap-2">
+        <div class="text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            <span class="text-xs font-bold text-white">ویرایش کانفیگ</span>
+            <i class="fa-solid fa-file-pen text-cyan-400 text-sm"></i>
+          </div>
+          <span class="text-[10px] text-slate-400 font-mono">VLESS + Reality</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- فیلد نام کانفیگ و کشور -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between">
+      <div class="flex-1 ml-3">
+        <label class="block text-[10px] text-slate-400 mb-1 text-right">نام و برچسب کانفیگ</label>
+        <input type="text" value="آلمان - فرانکفورت 01 (Ultra Fast)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400 font-medium text-right">
+      </div>
+      <div class="w-11 h-11 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl shadow-inner">🇩🇪</div>
+    </div>
+
+    <!-- آدرس سرور و پورت -->
+    <div class="grid grid-cols-3 gap-2.5">
+      <div class="col-span-2 bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
+        <div class="flex items-center justify-between mb-1">
+          <button class="text-slate-400 hover:text-cyan-400 text-xs"><i class="fa-regular fa-copy"></i></button>
+          <label class="text-[10px] text-slate-400 text-right">آدرس سرور / هاست</label>
+        </div>
+        <input type="text" value="de-fra-01.neonnet.online" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-400 text-left" dir="ltr">
+      </div>
+
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3">
+        <label class="block text-[10px] text-slate-400 mb-1 text-right">پورت شبکه</label>
+        <input type="text" value="443" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-cyan-400 text-center" dir="ltr">
+      </div>
+    </div>
+
+    <!-- شناسه کاربری (UUID / User ID) -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5">
+      <div class="flex items-center justify-between mb-1.5">
+        <div class="flex items-center gap-2">
+          <button class="text-slate-400 hover:text-cyan-400 text-xs"><i class="fa-regular fa-copy"></i></button>
+          <button class="text-[10px] text-cyan-400 hover:underline flex items-center gap-1 font-mono">
+            <i class="fa-solid fa-rotate-right text-[9px]"></i> تولید مجدد
+          </button>
+        </div>
+        <label class="text-[10px] text-slate-400">شناسه کاربری (UUID)</label>
+      </div>
+      <input type="text" value="a1b2c3d4-e5f6-7890-abcd-ef1234567890" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 font-mono focus:outline-none focus:border-cyan-400 text-left" dir="ltr">
+    </div>
+
+    <!-- نوع لایه انتقال (Transport Protocol) -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5">
+      <label class="block text-[10px] text-slate-400 mb-2 text-right">نوع لایه انتقال (Network Transport)</label>
+      <div class="grid grid-cols-4 gap-2">
+        <button class="py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 text-xs font-mono hover:border-cyan-500/40">TCP</button>
+        <button class="py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 text-xs font-mono hover:border-cyan-500/40">WS</button>
+        <button class="py-2 rounded-xl bg-cyan-400 text-slate-950 text-xs font-mono font-bold shadow-[0_0_10px_rgba(0,240,255,0.3)]">gRPC</button>
+        <button class="py-2 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 text-xs font-mono hover:border-cyan-500/40">H2</button>
+      </div>
+    </div>
+
+    <!-- تنظیمات اختصاصی امنیت (Reality / TLS) -->
+    <div class="bg-slate-900/90 border border-cyan-500/40 rounded-2xl p-3.5 flex flex-col gap-3 relative overflow-hidden">
+      <div class="flex items-center justify-between">
+        <span class="text-[9px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30 font-mono">Active</span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-xs font-bold text-white">تنظیمات امنیت Reality</span>
+          <i class="fa-solid fa-shield-halved text-cyan-400 text-xs"></i>
+        </div>
+      </div>
+
+      <!-- دامنه استتار SNI -->
+      <div>
+        <label class="block text-[10px] text-slate-400 mb-1 text-right">دامنه استتار سرور (Server Name / SNI)</label>
+        <input type="text" value="gateway.cloudflare.com" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-400 text-left" dir="ltr">
+      </div>
+
+      <!-- کلید عمومی (Public Key) -->
+      <div>
+        <label class="block text-[10px] text-slate-400 mb-1 text-right">کلید عمومی رمزنگاری (Public Key)</label>
+        <div class="relative">
+          <input type="password" value="r8xK29vL1pQ4mS7tU0wX3zY6aB5cD8eF" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 font-mono focus:outline-none focus:border-cyan-400 text-left pr-10" dir="ltr">
+          <button class="absolute right-3 top-2.5 text-slate-400 hover:text-slate-200 text-xs"><i class="fa-regular fa-eye"></i></button>
+        </div>
+      </div>
+
+      <!-- شناسه کوتاه و مسیر خزنده -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="block text-[10px] text-slate-400 mb-1 text-right">شناسه کوتاه (Short ID)</label>
+          <input type="text" value="7a8b9c" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono text-center" dir="ltr">
+        </div>
+        <div>
+          <label class="block text-[10px] text-slate-400 mb-1 text-right">مسیر خزنده (SpiderX)</label>
+          <input type="text" value="/" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 font-mono text-center" dir="ltr">
+        </div>
+      </div>
+
+      <!-- سوئیچ‌های پیشرفته مالتی‌پلکسینگ و امنیت -->
+      <div class="pt-2 border-t border-slate-800/80 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" checked class="sr-only peer">
+            <div class="w-10 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-400"></div>
+          </label>
+          <div class="text-right">
+            <span class="text-xs text-slate-200">مالتی‌پلکسینگ (TCP Mux)</span>
+            <p class="text-[10px] text-slate-500">کاهش هندشیک و بهبود سرعت باز شدن وب</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" class="sr-only peer">
+            <div class="w-10 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-400"></div>
+          </label>
+          <div class="text-right">
+            <span class="text-xs text-slate-200">رد کردن بررسی اصالت (Allow Insecure)</span>
+            <p class="text-[10px] text-rose-400/80">غیرفعال (توصیه شده)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- دکمه‌های اقدام نهایی (کپی کانفیگ / کد QR / حذف) -->
+    <div class="grid grid-cols-2 gap-2 mt-1">
+      <button class="bg-slate-900 border border-slate-800 hover:border-cyan-500/40 rounded-xl py-2.5 text-xs text-slate-300 flex items-center justify-center gap-2 transition-all">
+        <i class="fa-solid fa-qrcode text-cyan-400"></i>
+        <span>نمایش بارکد QR</span>
+      </button>
+
+      <button class="bg-slate-900 border border-slate-800 hover:border-cyan-500/40 rounded-xl py-2.5 text-xs text-slate-300 flex items-center justify-center gap-2 transition-all">
+        <i class="fa-regular fa-copy text-cyan-400"></i>
+        <span>کپی لینک //:vless</span>
+      </button>
+    </div>
+
+    <!-- دکمه حذف همیشگی کانفیگ -->
+    <button class="w-full bg-rose-950/30 border border-rose-500/30 hover:bg-rose-950/50 text-rose-400 rounded-xl py-2.5 text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+      <i class="fa-regular fa-trash-can"></i>
+      <span>حذف همیشگی این کانفیگ</span>
+    </button>
+  </main>
+
+  <!-- ناوبری پایین صفحه (تب سرورها فعال است) -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800/80 backdrop-blur-lg px-6 py-2 flex justify-between items-center z-50">
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-power-off text-lg"></i>
+      <span class="text-[10px]">اتصال</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-cyan-400">
+      <i class="fa-solid fa-server text-lg"></i>
+      <span class="text-[10px] font-medium">سرورها</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-circle-plus text-lg"></i>
+      <span class="text-[10px]">افزودن</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-route text-lg"></i>
+      <span class="text-[10px]">مسیریابی</span>
+    </button>
+  </nav>
+
+<script>
+(() => {
+'use strict';
+const PAGES = {
+ home:'dashboard.html', servers:'servers.html', add:'add_config.html', route:'routing.html',
+ editor:'config_editor.html', qr:'qr_scanner.html', logs:'live_console.html',
+ speed:'speed_test.html', apps:'per_app_proxy.html', advanced:'advanced_settings.html'
+};
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = {
+ get(k,d){try{return JSON.parse(localStorage.getItem('nn:'+k)) ?? d}catch{return d}},
+ set(k,v){localStorage.setItem('nn:'+k,JSON.stringify(v)); return v}
+};
+const native = window.Android || null;
+const toast = (msg) => {
+ let t=$('#nn-toast');
+ if(!t){t=document.createElement('div');t.id='nn-toast';t.style.cssText='position:fixed;z-index:99999;bottom:86px;left:16px;right:16px;background:#10232b;color:#dffaff;border:1px solid #00d9ef;padding:12px 15px;border-radius:14px;text-align:center;font:13px system-ui;box-shadow:0 8px 28px #0009';document.body.append(t)}
+ t.textContent=msg;t.style.display='block';clearTimeout(window.__nnt);window.__nnt=setTimeout(()=>t.style.display='none',2600);
+};
+const go = key => location.href=PAGES[key] || PAGES.home;
+const configs=()=>store.get('configs',[]);
+const selected=()=>store.get('selected',0);
+const current=()=>configs()[selected()] || configs()[0] || null;
+function parseVless(uri){
+ const u=new URL(uri.trim());
+ if(u.protocol!=='vless:') throw Error('فقط لینک VLESS پشتیبانی می‌شود');
+ const q=u.searchParams;
+ const cfg={id:crypto.randomUUID(),name:decodeURIComponent(u.hash.slice(1)||u.hostname),uri:uri.trim(),
+  protocol:'vless',host:u.hostname,port:Number(u.port),uuid:decodeURIComponent(u.username),
+  network:q.get('type')||'tcp',security:q.get('security')||'none',sni:q.get('sni')||'',
+  publicKey:q.get('pbk')||q.get('publicKey')||'',shortId:q.get('sid')||'',fingerprint:q.get('fp')||'chrome',
+  path:q.get('path')||'',serviceName:q.get('serviceName')||'',flow:q.get('flow')||'',created:Date.now()};
+ if(!cfg.host||!cfg.port||!cfg.uuid) throw Error('لینک ناقص است: آدرس، پورت یا UUID وجود ندارد');
+ if(cfg.security==='reality' && (!cfg.sni||!cfg.publicKey)) throw Error('Reality نیازمند SNI و Public Key است');
+ return cfg;
+}
+function saveConfig(c){
+ const a=configs(); const i=a.findIndex(x=>x.id===c.id);
+ if(i>=0)a[i]=c; else a.unshift(c);
+ store.set('configs',a);store.set('selected',Math.max(0,a.findIndex(x=>x.id===c.id)));
+ return c;
+}
+function addUri(uri,connect=false){
+ const c=parseVless(uri);saveConfig(c);toast('کانفیگ ذخیره شد');
+ if(connect) connectNow(); else go('servers');
+}
+function connectNow(){
+ const c=current();if(!c){toast('ابتدا یک کانفیگ اضافه کن');go('add');return}
+ if(!native){toast('این قابلیت فقط داخل نسخه اندروید فعال است');return}
+ native.connect(JSON.stringify(c));
+}
+function importText(txt){
+ const lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ let count=0,errors=[];
+ lines.forEach(line=>{try{if(line.startsWith('vless://')){saveConfig(parseVless(line));count++}}catch(e){errors.push(e.message)}});
+ if(count)toast(count+' کانفیگ وارد شد');else toast(errors[0]||'لینک VLESS پیدا نشد');
+ if(count)go('servers');
+}
+function nav(){
+ const navs=$$('nav');
+ navs.forEach(nav=>{
+  const buttons=$$('button',nav);
+  const keys=['home','servers','add','route','logs'];
+  buttons.forEach((b,i)=>{if(keys[i]){b.addEventListener('click',e=>{e.preventDefault();go(keys[i])});b.style.cursor='pointer'}});
+ });
+}
+function wireButtons(){
+ // All pages' primary power/connect controls.
+ $$('button').forEach(b=>{
+  const t=(b.innerText||'').replace(/\s+/g,' ').trim();
+  if(/قطع اتصال/.test(t) && !b.closest('nav')){b.addEventListener('click',e=>{e.preventDefault();native?.disconnect();toast('درخواست قطع اتصال ارسال شد')});}
+  else if(/اتصال فوری|اتصال به سرور|شروع اتصال|اتصال/.test(t) && !b.closest('nav')){
+   b.addEventListener('click',e=>{e.preventDefault();connectNow()});
+  }
+  if(/ذخیره تغییرات|ذخیره و اعمال|ذخیره کانفیگ/.test(t)){
+   b.addEventListener('click',e=>{e.preventDefault();saveEditor();});
+  }
+  if(/کپی لینک/.test(t)){b.addEventListener('click',()=>copy(current()?.uri||''))}
+  if(/حذف همیشگی|حذف کانفیگ/.test(t)){b.addEventListener('click',()=>{let a=configs();a.splice(selected(),1);store.set('configs',a);store.set('selected',0);toast('کانفیگ حذف شد');go('servers')})}
+  if(/اسکن با دوربین|شروع اسکن|باز کردن دوربین|اسکن QR کد|اسکن دوربین/.test(t)){b.addEventListener('click',e=>{e.preventDefault();startQr()})}
+  if(/از گالری|انتخاب فایل/.test(t)){b.addEventListener('click',()=>$('#nn-file')?.click())}
+  if(/وارد کردن دستی/.test(t)){b.addEventListener('click',()=>{const v=prompt('لینک VLESS را وارد کن:');if(v)try{addUri(v.trim())}catch(e){toast(e.message)}})}
+  if(/تست سرعت|شروع تست|اجرای تست|شروع بنچمارک/.test(t)){b.addEventListener('click',runSpeed)}
+  if(/بازنشانی/.test(t)){b.addEventListener('click',()=>{if(confirm('تنظیمات برنامه بازنشانی شود؟')){localStorage.clear();toast('تنظیمات بازنشانی شد')}})}
+  if(/اشتراک.gذاری|اشتراک‌گذاری/.test(t)){b.addEventListener('click',()=>shareResults())}
+ });
+}
+async function copy(v){if(!v)return toast('چیزی برای کپی وجود ندارد');try{await navigator.clipboard.writeText(v);toast('کپی شد')}catch{native?.copy(v);}}
+function saveEditor(){
+ const a=configs(), c=current()||{};
+ const inputs=$$('input');
+ const vals=inputs.map(x=>x.value);
+ // Form editor field order follows original HTML: label, host, port, UUID, transport, SNI, public key, short ID...
+ if(vals.length>=4){
+  c.name=vals[0]||c.name;c.host=vals[1]||c.host;c.port=Number(vals[2])||c.port;c.uuid=vals[3]||c.uuid;
+  c.sni=vals[5]||c.sni;c.publicKey=vals[6]||c.publicKey;c.shortId=vals[7]||c.shortId;
+  c.uri=buildVless(c);
+  saveConfig(c);toast('تغییرات ذخیره شد');
+ }
+}
+function buildVless(c){
+ const q=new URLSearchParams({encryption:'none',type:c.network||'tcp',security:c.security||'none'});
+ if(c.sni)q.set('sni',c.sni);if(c.publicKey)q.set('pbk',c.publicKey);if(c.shortId)q.set('sid',c.shortId);
+ if(c.fingerprint)q.set('fp',c.fingerprint);if(c.flow)q.set('flow',c.flow);
+ if(c.path)q.set('path',c.path);if(c.serviceName)q.set('serviceName',c.serviceName);
+ return `vless://${encodeURIComponent(c.uuid)}@${c.host}:${c.port}?${q}#${encodeURIComponent(c.name||'NeonNet')}`;
+}
+function renderSavedServers(){
+ if(!location.pathname.endsWith('servers.html'))return;
+ const a=configs(); const cards=$$('main > div');
+ if(!a.length)return;
+ const host=cards.find(x=>x.querySelector('h2')||x.innerText.includes('سرور'));
+ const list=cards[1]||cards[0]; if(!list)return;
+ const wrap=document.createElement('div');wrap.className='space-y-3 mt-3';
+ a.forEach((c,i)=>{const b=document.createElement('button');b.className='w-full text-right bg-slate-900 border border-cyan-900/60 rounded-2xl p-4 text-white';
+ b.innerHTML=`<div class="flex justify-between"><b>${escapeHtml(c.name||c.host)}</b><span class="text-cyan-400 text-xs">${c.security==='reality'?'Reality':'VLESS'}</span></div><div class="text-xs text-slate-400 mt-2" dir="ltr">${escapeHtml(c.host)}:${c.port}</div><div class="text-[10px] text-slate-500 mt-1">${escapeHtml(c.network||'tcp')}</div>`;
+ b.onclick=()=>{store.set('selected',i);go('home')};wrap.append(b)});
+ list.append(wrap);
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderEditor(){
+ if(!location.pathname.endsWith('config_editor.html'))return;
+ const c=current();if(!c)return;
+ const inputs=$$('main input');
+ const fields=[c.name,c.host,c.port,c.uuid,c.network,c.sni,c.publicKey,c.shortId];
+ inputs.forEach((el,i)=>{if(fields[i]!==undefined)el.value=fields[i]});
+}
+function initImport(){
+ const file=document.createElement('input');file.type='file';file.accept='.txt,.conf,.json,text/plain';file.id='nn-file';file.hidden=true;
+ file.onchange=async()=>{const f=file.files[0];if(f)importText(await f.text())};document.body.append(file);
+ const ta=$$('textarea')[0]; if(ta && !ta.dataset.nn){ta.dataset.nn='1';}
+}
+async function startQr(){
+ if(native && !native.hasCameraPermission()){native.requestCamera();toast('مجوز دوربین را بده و دوباره اسکن را بزن');return}
+ if(!navigator.mediaDevices?.getUserMedia || !('BarcodeDetector' in window)){toast('اسکن QR در این نسخهٔ WebView پشتیبانی نمی‌شود؛ لینک VLESS را از کلیپ‌بورد وارد کن');return}
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  const modal=document.createElement('div');modal.style.cssText='position:fixed;inset:0;background:#05090df2;z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML='<div style="color:#fff;margin-bottom:14px">دوربین را روبه‌روی QR بگیر</div><video autoplay playsinline style="width:100%;max-width:420px;border-radius:18px"></video><button style="margin-top:18px;padding:12px 24px;background:#00e5f5;border-radius:12px">بستن</button>';
+  document.body.append(modal);const video=$('video',modal);video.srcObject=stream;
+  const detector=new BarcodeDetector({formats:['qr_code']});
+  const stop=()=>{stream.getTracks().forEach(t=>t.stop());modal.remove()};
+  $('button',modal).onclick=stop;
+  const tick=async()=>{if(!modal.isConnected)return;try{const codes=await detector.detect(video);if(codes.length){stop();addUri(codes[0].rawValue,true);return}}catch{}requestAnimationFrame(tick)};
+  video.onloadedmetadata=()=>tick();
+ }catch(e){toast('دسترسی دوربین داده نشد')}
+}
+async function runSpeed(){
+ const c=current();if(!c){toast('اول به یک سرور وصل شو');return}
+ const start=performance.now();toast('در حال سنجش اتصال...');
+ try{const r=await fetch('https://www.gstatic.com/generate_204',{cache:'no-store',mode:'no-cors'});const ms=Math.round(performance.now()-start);toast('زمان پاسخ تقریبی: '+ms+' ms (تست دانلود/آپلود کامل نیست)')}
+ catch{toast('تست شبکه انجام نشد؛ اتصال VPN را بررسی کن')}
+}
+function shareResults(){const msg='NeonNet VPN\\nسرور: '+(current()?.name||'—')+'\\nتست: '+new Date().toLocaleString();if(navigator.share)navigator.share({text:msg}).catch(()=>{});else copy(msg)}
+function syncDashboard(){
+ if(!location.pathname.endsWith('dashboard.html'))return;
+ const c=current();const label=$$('main *').find(x=>x.children.length===0&&/آلمان|فرانکفورت|سرور انتخابی/.test(x.textContent||''));
+ if(label&&c)label.textContent=c.name||c.host;
+ if(native){try{const s=JSON.parse(native.status());const p=$('#power-btn');if(p){p.dataset.connected=s.connected?'1':'0';}}catch{}}
+}
+
+async function loadInstalledApps(){
+ if(!location.pathname.endsWith('per_app_proxy.html') || !native?.installedApps)return;
+ try{
+  const apps=JSON.parse(native.installedApps()), chosen=new Set(store.get('excludedPackages',[]));
+  const box=document.createElement('section');box.className='mt-4 bg-slate-900/90 border border-cyan-900/60 rounded-2xl p-3';
+  box.innerHTML='<h3 class="text-sm font-bold text-white mb-3">برنامه‌های نصب‌شده روی گوشی</h3><div class="text-[10px] text-slate-400 mb-2">تیک‌زدن یعنی عبور مستقیم از VPN</div><div id="nn-app-list" class="max-h-72 overflow-auto space-y-2"></div><button id="nn-app-save" class="w-full mt-3 bg-cyan-400 text-slate-950 rounded-xl p-3 text-xs font-bold">ذخیره استثناها</button>';
+  document.querySelector('main')?.append(box);
+  const list=$('#nn-app-list',box);
+  apps.forEach(a=>{const row=document.createElement('label');row.className='flex items-center justify-between text-xs text-slate-200 py-1';row.innerHTML=`<span>${escapeHtml(a.label)} <small class="text-slate-500">${escapeHtml(a.package)}</small></span><input type="checkbox" value="${escapeHtml(a.package)}" ${chosen.has(a.package)?'checked':''}>`;list.append(row)});
+  $('#nn-app-save',box).onclick=()=>{const arr=$$('input:checked',list).map(x=>x.value);store.set('excludedPackages',arr);native.setExcludedApps(JSON.stringify(arr));toast('استثناها ذخیره شد؛ برای اعمال، VPN را یک‌بار قطع و وصل کن')};
+ }catch(e){toast('فهرست برنامه‌ها بارگذاری نشد')}
+}
+
+function init(){
+ nav();wireButtons();initImport();renderSavedServers();renderEditor();syncDashboard();loadInstalledApps();
+ // Persist toggles and text preferences across all pages.
+ $$('input[type=checkbox],input[type=radio],select').forEach((el,i)=>{
+   const k='ui:'+location.pathname+':'+(el.id||el.name||i);
+   const saved=store.get(k,null);if(saved!==null){if(el.type==='checkbox'||el.type==='radio')el.checked=!!saved;else el.value=saved}
+   el.addEventListener('change',()=>store.set(k,el.type==='checkbox'||el.type==='radio'?el.checked:el.value));
+ });
+ // VLESS text box / clipboard import.
+ $$('button').filter(b=>/کلیپ‌بورد|Paste|چسباندن/.test(b.innerText)).forEach(b=>b.onclick=async()=>{try{const v=native?.readClipboard?.() || await navigator.clipboard.readText();importText(v)}catch{toast('کلیپ‌بورد خالی است یا دسترسی ممکن نیست')}});
+ // Allow a pasted URI in any text field via long-press paste or submit.
+ $$('input,textarea').forEach(el=>el.addEventListener('change',()=>{if((el.value||'').trim().startsWith('vless://')){try{addUri(el.value.trim())}catch(e){toast(e.message)}}}));
+}
+window.NeonApp={go,addUri,importText,connectNow,toast,store,configs,current,saveConfig,buildVless};
+document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+
+</body>
+</html>

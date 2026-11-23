@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تست سرعت و بنچمارک شبکه - نئون‌نت</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #0b0e15; font-family: system-ui, -apple-system, sans-serif; }
+    .neon-glow { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
+    .neon-border { border-color: #00f0ff; }
+    .speed-gauge {
+      background: conic-gradient(from 180deg at 50% 50%, #00f0ff 0%, #10b981 70%, #0b0e15 70%);
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between p-4 pb-24 select-none">
+  <!-- هدر بالای صفحه -->
+  <header class="flex items-center justify-between py-2 px-1">
+    <div class="flex items-center gap-2.5">
+      <div class="w-10 h-10 rounded-full bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400">
+        <i class="fa-regular fa-bell"></i>
+      </div>
+    </div>
+
+    <!-- وضعیت و هویت نئون‌نت -->
+    <div class="flex items-center gap-2">
+      <div class="text-right">
+        <h1 class="text-base font-bold text-white tracking-wide">نئون‌نت</h1>
+        <p class="text-[11px] text-cyan-400/80 font-mono">Speed Benchmark</p>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-cyan-950/80 border border-cyan-400/60 flex items-center justify-center text-cyan-300">
+        <i class="fa-solid fa-gauge-high text-lg"></i>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 flex flex-col gap-4 mt-1 max-w-sm mx-auto w-full">
+    <!-- تیتر صفحه و تاریخچه تست‌ها -->
+    <div class="flex items-center justify-between px-1">
+      <button class="text-xs text-slate-400 hover:text-cyan-400 flex items-center gap-1.5 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-xl transition-all">
+        <i class="fa-solid fa-clock-rotate-left text-[11px]"></i>
+        <span>تاریخچه</span>
+      </button>
+
+      <div class="flex items-center gap-2">
+        <h2 class="text-base font-bold text-white">تست سرعت و بنچمارک شبکه</h2>
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+      </div>
+    </div>
+
+    <!-- کارت اطلاعات سرور انتخاب‌شده برای تست -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between">
+      <button class="w-9 h-9 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-cyan-400 transition-colors">
+        <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right">
+          <div class="flex items-center justify-end gap-1.5">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30">بهینه</span>
+            <span class="text-xs font-bold text-white font-mono">سرور فرانکفورت (Frankfurt #04)</span>
+          </div>
+          <div class="text-[11px] text-slate-400 mt-0.5 font-mono">
+            <span>مسیریابی هوشمند • پروتکل VLESS-XTLS</span>
+          </div>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-cyan-950/60 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-lg shadow-inner">
+          🇩🇪
+        </div>
+      </div>
+    </div>
+
+    <!-- گیج سرعت نیم‌دایره نئونی -->
+    <div class="relative w-full bg-slate-900/40 border border-slate-800/80 rounded-3xl p-5 flex flex-col items-center justify-center overflow-hidden">
+      <!-- نشانگر زنده بودن تست -->
+      <div class="absolute top-3 right-4 flex items-center gap-1.5 text-[10px] font-mono text-cyan-400">
+        <span>بنچمارک پهنای باند زنده (Live Flow)</span>
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+      </div>
+
+      <!-- حلقه گرافیکی گیج سرعت -->
+      <div class="relative w-52 h-52 rounded-full border-4 border-slate-800/60 flex items-center justify-center mt-3">
+        <!-- قوس پیشرفت نئونی -->
+        <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-cyan-400 border-r-emerald-400 shadow-[0_0_25px_rgba(0,240,255,0.35)] rotate-45"></div>
+
+        <!-- محتوای وسط سرعت -->
+        <div class="flex flex-col items-center justify-center text-center">
+          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Download Rate</span>
+          <div class="text-4xl font-extrabold text-white font-mono my-0.5 tracking-tight">۹۴.۶</div>
+          <div class="text-xs font-bold text-cyan-400 font-mono bg-cyan-950/60 px-2.5 py-0.5 rounded-full border border-cyan-500/30">
+            Mbps
+          </div>
+          <span class="text-[10px] text-emerald-400 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-bolt text-[9px]"></i>
+            <span>پایدار و بدون نوسان</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- نمودار نوسان داده (Telemetry Sparkline) -->
+      <div class="w-full mt-4 pt-3 border-t border-slate-800/80 flex flex-col gap-1">
+        <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+          <span class="text-cyan-400 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>نوسان داده آنی (Telemetry)</span>
+          </span>
+          <span>128 پکت / ثانیه</span>
+        </div>
+        <div class="h-9 w-full flex items-end gap-1 px-1">
+          <div class="flex-1 bg-cyan-500/30 rounded-t h-4"></div>
+          <div class="flex-1 bg-cyan-500/50 rounded-t h-6"></div>
+          <div class="flex-1 bg-cyan-500/40 rounded-t h-5"></div>
+          <div class="flex-1 bg-cyan-400/80 rounded-t h-8"></div>
+          <div class="flex-1 bg-cyan-400 rounded-t h-9 shadow-[0_0_8px_#00f0ff]"></div>
+          <div class="flex-1 bg-cyan-400/90 rounded-t h-8"></div>
+          <div class="flex-1 bg-cyan-500/60 rounded-t h-7"></div>
+          <div class="flex-1 bg-cyan-500/80 rounded-t h-8"></div>
+          <div class="flex-1 bg-cyan-400 rounded-t h-9"></div>
+          <div class="flex-1 bg-emerald-400 rounded-t h-9 shadow-[0_0_8px_#10b981]"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- دکمه بزرگ شروع مجدد تست با افکت نئونی -->
+    <button class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 to-teal-400 hover:from-cyan-300 hover:to-teal-300 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,240,255,0.45)] transition-all active:scale-98">
+      <i class="fa-solid fa-rotate-right text-base animate-spin" style="animation-duration: 4s;"></i>
+      <span>شروع تست بنچمارک مجدد</span>
+    </button>
+
+    <!-- ۴ کارت پارامترهای اصلی شبکه (پینگ، جیتر، دانلود، آپلود) -->
+    <div class="grid grid-cols-2 gap-2.5">
+      <!-- پینگ -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 font-mono">Ping</span>
+          <i class="fa-solid fa-signal text-cyan-400 text-xs"></i>
+        </div>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-[10px] text-slate-400 font-mono">ms</span>
+          <span class="text-xl font-bold text-white font-mono">34</span>
+        </div>
+        <div class="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>پایداری عالی (Tier 1)</span>
+        </div>
+      </div>
+
+      <!-- جیتر (Jitter) -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 font-mono">Jitter</span>
+          <i class="fa-solid fa-wave-square text-cyan-400 text-xs"></i>
+        </div>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-[10px] text-slate-400 font-mono">ms</span>
+          <span class="text-xl font-bold text-white font-mono">1.8</span>
+        </div>
+        <div class="text-[10px] text-emerald-400 flex items-center gap-1 mt-0.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>بدون پرش پکت</span>
+        </div>
+      </div>
+
+      <!-- سرعت دانلود -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 font-mono">Download</span>
+          <i class="fa-solid fa-cloud-arrow-down text-emerald-400 text-xs"></i>
+        </div>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-[10px] text-slate-400 font-mono">Mbps</span>
+          <span class="text-xl font-bold text-emerald-400 font-mono">94.6</span>
+        </div>
+        <div class="text-[10px] text-slate-400 mt-0.5 font-mono">
+          <span>+12.4% نسبت به دیروز</span>
+        </div>
+      </div>
+
+      <!-- سرعت آپلود -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex flex-col gap-1">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-slate-400 font-mono">Upload</span>
+          <i class="fa-solid fa-cloud-arrow-up text-cyan-400 text-xs"></i>
+        </div>
+        <div class="flex items-baseline justify-between mt-1">
+          <span class="text-[10px] text-slate-400 font-mono">Mbps</span>
+          <span class="text-xl font-bold text-white font-mono">38.2</span>
+        </div>
+        <div class="text-[10px] text-cyan-400 flex items-center gap-1 mt-0.5">
+          <i class="fa-solid fa-circle-check text-[9px]"></i>
+          <span>مناسب استریم زنده</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ارزیابی سناریوهای واقعی کاربردی (Gaming, Streaming, DNS) -->
+    <div class="flex items-center justify-between px-1 mt-1">
+      <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-500/30 font-mono font-bold">A+</span>
+      <h3 class="text-xs font-bold text-slate-300">ارزیابی سناریوهای واقعی کاربردی</h3>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <!-- استریم ۴K -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+        <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold">۱۰۰٪ آماده</span>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-xs font-semibold text-slate-200">استریم یوتیوب 4K (60fps)</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">لود بافرینگ: ۰.۰ ثانیه • روان</div>
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-rose-400 text-xs">
+            <i class="fa-brands fa-youtube"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- گیمینگ آنلاین -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+        <span class="text-xs px-2.5 py-1 rounded-lg bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 font-mono font-bold">پینگ سبز</span>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-xs font-semibold text-slate-200">بازی رقابتی (Valorant / CS2)</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">پکت‌لاس: ۰.۰٪ • پینگ ثابت ۳۴ms</div>
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 text-xs">
+            <i class="fa-solid fa-gamepad"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- پاسخ‌دهی DNS -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+        <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold">فوق‌سریع</span>
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="text-xs font-semibold text-slate-200">وب‌گردی و پاسخ DNS</div>
+            <div class="text-[10px] text-slate-500 font-mono mt-0.5">میانگین باز شدن سایت‌ها: ۰.۴ ثانیه</div>
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-emerald-400 text-xs">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- دکمه اشتراک‌گذاری نتایج بنچمارک -->
+    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 flex items-center justify-between">
+      <button class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition-colors">
+        <i class="fa-solid fa-share-nodes text-cyan-400"></i>
+        <span>اشتراک‌گذاری</span>
+      </button>
+      <div class="text-right">
+        <div class="text-xs font-bold text-white">کارت نتایج بنچمارک آماده است</div>
+        <div class="text-[10px] text-slate-500 font-mono mt-0.5">شناسه تست: NN-94821-DE</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ناوبری پایین صفحه (تب اتصال فعال است) -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800/80 backdrop-blur-lg px-6 py-2 flex justify-between items-center z-50">
+    <button class="flex flex-col items-center gap-1 text-cyan-400">
+      <i class="fa-solid fa-power-off text-lg"></i>
+      <span class="text-[10px] font-medium">اتصال</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-server text-lg"></i>
+      <span class="text-[10px]">سرورها</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-circle-plus text-lg"></i>
+      <span class="text-[10px]">افزودن</span>
+    </button>
+    <button class="flex flex-col items-center gap-1 text-slate-400 hover:text-cyan-300">
+      <i class="fa-solid fa-route text-lg"></i>
+      <span class="text-[10px]">مسیریابی</span>
+    </button>
+  </nav>
+
+<script>
+(() => {
+'use strict';
+const PAGES = {
+ home:'dashboard.html', servers:'servers.html', add:'add_config.html', route:'routing.html',
+ editor:'config_editor.html', qr:'qr_scanner.html', logs:'live_console.html',
+ speed:'speed_test.html', apps:'per_app_proxy.html', advanced:'advanced_settings.html'
+};
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = {
+ get(k,d){try{return JSON.parse(localStorage.getItem('nn:'+k)) ?? d}catch{return d}},
+ set(k,v){localStorage.setItem('nn:'+k,JSON.stringify(v)); return v}
+};
+const native = window.Android || null;
+const toast = (msg) => {
+ let t=$('#nn-toast');
+ if(!t){t=document.createElement('div');t.id='nn-toast';t.style.cssText='position:fixed;z-index:99999;bottom:86px;left:16px;right:16px;background:#10232b;color:#dffaff;border:1px solid #00d9ef;padding:12px 15px;border-radius:14px;text-align:center;font:13px system-ui;box-shadow:0 8px 28px #0009';document.body.append(t)}
+ t.textContent=msg;t.style.display='block';clearTimeout(window.__nnt);window.__nnt=setTimeout(()=>t.style.display='none',2600);
+};
+const go = key => location.href=PAGES[key] || PAGES.home;
+const configs=()=>store.get('configs',[]);
+const selected=()=>store.get('selected',0);
+const current=()=>configs()[selected()] || configs()[0] || null;
+function parseVless(uri){
+ const u=new URL(uri.trim());
+ if(u.protocol!=='vless:') throw Error('فقط لینک VLESS پشتیبانی می‌شود');
+ const q=u.searchParams;
+ const cfg={id:crypto.randomUUID(),name:decodeURIComponent(u.hash.slice(1)||u.hostname),uri:uri.trim(),
+  protocol:'vless',host:u.hostname,port:Number(u.port),uuid:decodeURIComponent(u.username),
+  network:q.get('type')||'tcp',security:q.get('security')||'none',sni:q.get('sni')||'',
+  publicKey:q.get('pbk')||q.get('publicKey')||'',shortId:q.get('sid')||'',fingerprint:q.get('fp')||'chrome',
+  path:q.get('path')||'',serviceName:q.get('serviceName')||'',flow:q.get('flow')||'',created:Date.now()};
+ if(!cfg.host||!cfg.port||!cfg.uuid) throw Error('لینک ناقص است: آدرس، پورت یا UUID وجود ندارد');
+ if(cfg.security==='reality' && (!cfg.sni||!cfg.publicKey)) throw Error('Reality نیازمند SNI و Public Key است');
+ return cfg;
+}
+function saveConfig(c){
+ const a=configs(); const i=a.findIndex(x=>x.id===c.id);
+ if(i>=0)a[i]=c; else a.unshift(c);
+ store.set('configs',a);store.set('selected',Math.max(0,a.findIndex(x=>x.id===c.id)));
+ return c;
+}
+function addUri(uri,connect=false){
+ const c=parseVless(uri);saveConfig(c);toast('کانفیگ ذخیره شد');
+ if(connect) connectNow(); else go('servers');
+}
+function connectNow(){
+ const c=current();if(!c){toast('ابتدا یک کانفیگ اضافه کن');go('add');return}
+ if(!native){toast('این قابلیت فقط داخل نسخه اندروید فعال است');return}
+ native.connect(JSON.stringify(c));
+}
+function importText(txt){
+ const lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+ let count=0,errors=[];
+ lines.forEach(line=>{try{if(line.startsWith('vless://')){saveConfig(parseVless(line));count++}}catch(e){errors.push(e.message)}});
+ if(count)toast(count+' کانفیگ وارد شد');else toast(errors[0]||'لینک VLESS پیدا نشد');
+ if(count)go('servers');
+}
+function nav(){
+ const navs=$$('nav');
+ navs.forEach(nav=>{
+  const buttons=$$('button',nav);
+  const keys=['home','servers','add','route','logs'];
+  buttons.forEach((b,i)=>{if(keys[i]){b.addEventListener('click',e=>{e.preventDefault();go(keys[i])});b.style.cursor='pointer'}});
+ });
+}
+function wireButtons(){
+ // All pages' primary power/connect controls.
+ $$('button').forEach(b=>{
+  const t=(b.innerText||'').replace(/\s+/g,' ').trim();
+  if(/قطع اتصال/.test(t) && !b.closest('nav')){b.addEventListener('click',e=>{e.preventDefault();native?.disconnect();toast('درخواست قطع اتصال ارسال شد')});}
+  else if(/اتصال فوری|اتصال به سرور|شروع اتصال|اتصال/.test(t) && !b.closest('nav')){
+   b.addEventListener('click',e=>{e.preventDefault();connectNow()});
+  }
+  if(/ذخیره تغییرات|ذخیره و اعمال|ذخیره کانفیگ/.test(t)){
+   b.addEventListener('click',e=>{e.preventDefault();saveEditor();});
+  }
+  if(/کپی لینک/.test(t)){b.addEventListener('click',()=>copy(current()?.uri||''))}
+  if(/حذف همیشگی|حذف کانفیگ/.test(t)){b.addEventListener('click',()=>{let a=configs();a.splice(selected(),1);store.set('configs',a);store.set('selected',0);toast('کانفیگ حذف شد');go('servers')})}
+  if(/اسکن با دوربین|شروع اسکن|باز کردن دوربین|اسکن QR کد|اسکن دوربین/.test(t)){b.addEventListener('click',e=>{e.preventDefault();startQr()})}
+  if(/از گالری|انتخاب فایل/.test(t)){b.addEventListener('click',()=>$('#nn-file')?.click())}
+  if(/وارد کردن دستی/.test(t)){b.addEventListener('click',()=>{const v=prompt('لینک VLESS را وارد کن:');if(v)try{addUri(v.trim())}catch(e){toast(e.message)}})}
+  if(/تست سرعت|شروع تست|اجرای تست|شروع بنچمارک/.test(t)){b.addEventListener('click',runSpeed)}
+  if(/بازنشانی/.test(t)){b.addEventListener('click',()=>{if(confirm('تنظیمات برنامه بازنشانی شود؟')){localStorage.clear();toast('تنظیمات بازنشانی شد')}})}
+  if(/اشتراک.gذاری|اشتراک‌گذاری/.test(t)){b.addEventListener('click',()=>shareResults())}
+ });
+}
+async function copy(v){if(!v)return toast('چیزی برای کپی وجود ندارد');try{await navigator.clipboard.writeText(v);toast('کپی شد')}catch{native?.copy(v);}}
+function saveEditor(){
+ const a=configs(), c=current()||{};
+ const inputs=$$('input');
+ const vals=inputs.map(x=>x.value);
+ // Form editor field order follows original HTML: label, host, port, UUID, transport, SNI, public key, short ID...
+ if(vals.length>=4){
+  c.name=vals[0]||c.name;c.host=vals[1]||c.host;c.port=Number(vals[2])||c.port;c.uuid=vals[3]||c.uuid;
+  c.sni=vals[5]||c.sni;c.publicKey=vals[6]||c.publicKey;c.shortId=vals[7]||c.shortId;
+  c.uri=buildVless(c);
+  saveConfig(c);toast('تغییرات ذخیره شد');
+ }
+}
+function buildVless(c){
+ const q=new URLSearchParams({encryption:'none',type:c.network||'tcp',security:c.security||'none'});
+ if(c.sni)q.set('sni',c.sni);if(c.publicKey)q.set('pbk',c.publicKey);if(c.shortId)q.set('sid',c.shortId);
+ if(c.fingerprint)q.set('fp',c.fingerprint);if(c.flow)q.set('flow',c.flow);
+ if(c.path)q.set('path',c.path);if(c.serviceName)q.set('serviceName',c.serviceName);
+ return `vless://${encodeURIComponent(c.uuid)}@${c.host}:${c.port}?${q}#${encodeURIComponent(c.name||'NeonNet')}`;
+}
+function renderSavedServers(){
+ if(!location.pathname.endsWith('servers.html'))return;
+ const a=configs(); const cards=$$('main > div');
+ if(!a.length)return;
+ const host=cards.find(x=>x.querySelector('h2')||x.innerText.includes('سرور'));
+ const list=cards[1]||cards[0]; if(!list)return;
+ const wrap=document.createElement('div');wrap.className='space-y-3 mt-3';
+ a.forEach((c,i)=>{const b=document.createElement('button');b.className='w-full text-right bg-slate-900 border border-cyan-900/60 rounded-2xl p-4 text-white';
+ b.innerHTML=`<div class="flex justify-between"><b>${escapeHtml(c.name||c.host)}</b><span class="text-cyan-400 text-xs">${c.security==='reality'?'Reality':'VLESS'}</span></div><div class="text-xs text-slate-400 mt-2" dir="ltr">${escapeHtml(c.host)}:${c.port}</div><div class="text-[10px] text-slate-500 mt-1">${escapeHtml(c.network||'tcp')}</div>`;
+ b.onclick=()=>{store.set('selected',i);go('home')};wrap.append(b)});
+ list.append(wrap);
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderEditor(){
+ if(!location.pathname.endsWith('config_editor.html'))return;
+ const c=current();if(!c)return;
+ const inputs=$$('main input');
+ const fields=[c.name,c.host,c.port,c.uuid,c.network,c.sni,c.publicKey,c.shortId];
+ inputs.forEach((el,i)=>{if(fields[i]!==undefined)el.value=fields[i]});
+}
+function initImport(){
+ const file=document.createElement('input');file.type='file';file.accept='.txt,.conf,.json,text/plain';file.id='nn-file';file.hidden=true;
+ file.onchange=async()=>{const f=file.files[0];if(f)importText(await f.text())};document.body.append(file);
+ const ta=$$('textarea')[0]; if(ta && !ta.dataset.nn){ta.dataset.nn='1';}
+}
+async function startQr(){
+ if(native && !native.hasCameraPermission()){native.requestCamera();toast('مجوز دوربین را بده و دوباره اسکن را بزن');return}
+ if(!navigator.mediaDevices?.getUserMedia || !('BarcodeDetector' in window)){toast('اسکن QR در این نسخهٔ WebView پشتیبانی نمی‌شود؛ لینک VLESS را از کلیپ‌بورد وارد کن');return}
+ try{
+  const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  const modal=document.createElement('div');modal.style.cssText='position:fixed;inset:0;background:#05090df2;z-index:100000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px';
+  modal.innerHTML='<div style="color:#fff;margin-bottom:14px">دوربین را روبه‌روی QR بگیر</div><video autoplay playsinline style="width:100%;max-width:420px;border-radius:18px"></video><button style="margin-top:18px;padding:12px 24px;background:#00e5f5;border-radius:12px">بستن</button>';
+  document.body.append(modal);const video=$('video',modal);video.srcObject=stream;
+  const detector=new BarcodeDetector({formats:['qr_code']});
+  const stop=()=>{stream.getTracks().forEach(t=>t.stop());modal.remove()};
+  $('button',modal).onclick=stop;
+  const tick=async()=>{if(!modal.isConnected)return;try{const codes=await detector.detect(video);if(codes.length){stop();addUri(codes[0].rawValue,true);return}}catch{}requestAnimationFrame(tick)};
+  video.onloadedmetadata=()=>tick();
+ }catch(e){toast('دسترسی دوربین داده نشد')}
+}
+async function runSpeed(){
+ const c=current();if(!c){toast('اول به یک سرور وصل شو');return}
+ const start=performance.now();toast('در حال سنجش اتصال...');
+ try{const r=await fetch('https://www.gstatic.com/generate_204',{cache:'no-store',mode:'no-cors'});const ms=Math.round(performance.now()-start);toast('زمان پاسخ تقریبی: '+ms+' ms (تست دانلود/آپلود کامل نیست)')}
+ catch{toast('تست شبکه انجام نشد؛ اتصال VPN را بررسی کن')}
+}
+function shareResults(){const msg='NeonNet VPN\\nسرور: '+(current()?.name||'—')+'\\nتست: '+new Date().toLocaleString();if(navigator.share)navigator.share({text:msg}).catch(()=>{});else copy(msg)}
+function syncDashboard(){
+ if(!location.pathname.endsWith('dashboard.html'))return;
+ const c=current();const label=$$('main *').find(x=>x.children.length===0&&/آلمان|فرانکفورت|سرور انتخابی/.test(x.textContent||''));
+ if(label&&c)label.textContent=c.name||c.host;
+ if(native){try{const s=JSON.parse(native.status());const p=$('#power-btn');if(p){p.dataset.connected=s.connected?'1':'0';}}catch{}}
+}
+
+async function loadInstalledApps(){
+ if(!location.pathname.endsWith('per_app_proxy.html') || !native?.installedApps)return;
+ try{
+  const apps=JSON.parse(native.installedApps()), chosen=new Set(store.get('excludedPackages',[]));
+  const box=document.createElement('section');box.className='mt-4 bg-slate-900/90 border border-cyan-900/60 rounded-2xl p-3';
+  box.innerHTML='<h3 class="text-sm font-bold text-white mb-3">برنامه‌های نصب‌شده روی گوشی</h3><div class="text-[10px] text-slate-400 mb-2">تیک‌زدن یعنی عبور مستقیم از VPN</div><div id="nn-app-list" class="max-h-72 overflow-auto space-y-2"></div><button id="nn-app-save" class="w-full mt-3 bg-cyan-400 text-slate-950 rounded-xl p-3 text-xs font-bold">ذخیره استثناها</button>';
+  document.querySelector('main')?.append(box);
+  const list=$('#nn-app-list',box);
+  apps.forEach(a=>{const row=document.createElement('label');row.className='flex items-center justify-between text-xs text-slate-200 py-1';row.innerHTML=`<span>${escapeHtml(a.label)} <small class="text-slate-500">${escapeHtml(a.package)}</small></span><input type="checkbox" value="${escapeHtml(a.package)}" ${chosen.has(a.package)?'checked':''}>`;list.append(row)});
+  $('#nn-app-save',box).onclick=()=>{const arr=$$('input:checked',list).map(x=>x.value);store.set('excludedPackages',arr);native.setExcludedApps(JSON.stringify(arr));toast('استثناها ذخیره شد؛ برای اعمال، VPN را یک‌بار قطع و وصل کن')};
+ }catch(e){toast('فهرست برنامه‌ها بارگذاری نشد')}
+}
+
+function init(){
+ nav();wireButtons();initImport();renderSavedServers();renderEditor();syncDashboard();loadInstalledApps();
+ // Persist toggles and text preferences across all pages.
+ $$('input[type=checkbox],input[type=radio],select').forEach((el,i)=>{
+   const k='ui:'+location.pathname+':'+(el.id||el.name||i);
+   const saved=store.get(k,null);if(saved!==null){if(el.type==='checkbox'||el.type==='radio')el.checked=!!saved;else el.value=saved}
+   el.addEventListener('change',()=>store.set(k,el.type==='checkbox'||el.type==='radio'?el.checked:el.value));
+ });
+ // VLESS text box / clipboard import.
+ $$('button').filter(b=>/کلیپ‌بورد|Paste|چسباندن/.test(b.innerText)).forEach(b=>b.onclick=async()=>{try{const v=native?.readClipboard?.() || await navigator.clipboard.readText();importText(v)}catch{toast('کلیپ‌بورد خالی است یا دسترسی ممکن نیست')}});
+ // Allow a pasted URI in any text field via long-press paste or submit.
+ $$('input,textarea').forEach(el=>el.addEventListener('change',()=>{if((el.value||'').trim().startsWith('vless://')){try{addUri(el.value.trim())}catch(e){toast(e.message)}}}));
+}
+window.NeonApp={go,addUri,importText,connectNow,toast,store,configs,current,saveConfig,buildVless};
+document.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+
+</body>
+</html>
