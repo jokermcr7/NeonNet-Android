@@ -1,52 +1,73 @@
 package com.neonnet.vpn
 
-import android.net.Uri
 import org.json.JSONArray
 import org.json.JSONObject
 
+/** Builds an Android TUN configuration around libXray's official share-link parser. */
 object XrayConfig {
-    fun build(uriText: String, tunFd: Int, physicalInterface: String): String {
-        val uri = Uri.parse(uriText)
-        require(uri.scheme == "vless") { "فقط VLESS پشتیبانی می‌شود" }
-        val host = uri.host ?: error("آدرس سرور نامعتبر است")
-        val port = uri.port.takeIf { it > 0 } ?: error("پورت نامعتبر است")
-        val uuid = uri.userInfo?.substringBefore(':') ?: error("UUID وجود ندارد")
-        val q = uri.queryParameterNames
-        fun p(k: String, d: String = "") = uri.getQueryParameter(k) ?: d
-        val user = JSONObject().put("id", uuid).put("encryption", "none")
-        if (p("flow").isNotBlank()) user.put("flow", p("flow"))
-        val vnext = JSONObject().put("address", host).put("port", port)
-            .put("users", JSONArray().put(user))
-        val outbound = JSONObject().put("tag", "proxy").put("protocol", "vless")
-            .put("settings", JSONObject().put("vnext", JSONArray().put(vnext)))
-        val network = p("type", "tcp")
-        val stream = JSONObject().put("network", network)
-        when (p("security", "none")) {
-            "reality" -> stream.put("security", "reality").put("realitySettings",
-                JSONObject().put("show", false).put("serverName", p("sni"))
-                    .put("fingerprint", p("fp", "chrome")).put("publicKey", p("pbk", p("publicKey")))
-                    .put("shortId", p("sid")).put("spiderX", p("spx", "/")))
-            "tls" -> stream.put("security", "tls").put("tlsSettings",
-                JSONObject().put("serverName", p("sni")).put("fingerprint", p("fp", "chrome")))
-            else -> stream.put("security", "none")
+    /**
+     * Converts a supported Xray share link (VLESS/VMess AEAD/Trojan/Shadowsocks/SOCKS)
+     * into a complete Android TUN configuration. Parsing is delegated to the exact
+     * libXray artifact bundled by the build workflow; we do not hand-roll protocol JSON.
+     */
+    fun build(shareLink: String, tunFd: Int, physicalInterface: String): String {
+        require(shareLink.isNotBlank()) { "لینک کانفیگ خالی است" }
+        require(tunFd >= 0) { "شناسه TUN نامعتبر است" }
+        require(physicalInterface.isNotBlank()) { "رابط اینترنت اصلی پیدا نشد" }
+
+        val converted = LibXray.invoke(
+            "convertShareLinksToXrayJson",
+            JSONObject().put("text", shareLink.trim())
+        )
+        val data = converted.optJSONObject("data")
+            ?: error("پاسخ مبدل کانفیگ از libXray خالی است")
+        val sourceOutbounds = data.optJSONArray("outbounds")
+            ?: error("هیچ خروجی معتبری در کانفیگ پیدا نشد")
+        require(sourceOutbounds.length() > 0) { "هیچ سرور قابل استفاده‌ای در کانفیگ پیدا نشد" }
+
+        // libXray share-link conversion validates the outbound using the bundled Xray core.
+        // Use a stable tag so the TUN routing rule always points at the selected server.
+        val outbounds = JSONArray()
+        var proxyTag: String? = null
+        for (index in 0 until sourceOutbounds.length()) {
+            val outbound = sourceOutbounds.optJSONObject(index)?.let { JSONObject(it.toString()) }
+                ?: continue
+            val tag = if (index == 0) "proxy" else outbound.optString("tag").ifBlank { "proxy-$index" }
+            outbound.put("tag", tag)
+            if (proxyTag == null) proxyTag = tag
+            outbounds.put(outbound)
         }
-        when (network) {
-            "ws" -> stream.put("wsSettings", JSONObject().put("path", p("path", "/")))
-            "grpc" -> stream.put("grpcSettings", JSONObject().put("serviceName", p("serviceName")))
-            "httpupgrade" -> stream.put("httpupgradeSettings", JSONObject().put("path", p("path", "/")))
-        }
-        outbound.put("streamSettings", stream)
+        require(outbounds.length() > 0 && proxyTag != null) { "خروجی معتبر Xray ساخته نشد" }
+        outbounds.put(JSONObject().put("tag", "direct").put("protocol", "freedom"))
+
         val tunSettings = JSONObject()
-            .put("name", "neonnet0").put("mtu", 1500)
+            .put("name", "neonnet0")
+            .put("mtu", 1500)
             .put("gateway", JSONArray().put("10.0.0.1/30").put("fd00::1/126"))
             .put("dns", JSONArray().put("1.1.1.1").put("8.8.8.8"))
+            // Android requires an explicit physical interface name for socket binding.
             .put("autoOutboundsInterface", physicalInterface)
-        val inbound = JSONObject().put("tag", "tun-in").put("protocol", "tun").put("settings", tunSettings)
-        val routing = JSONObject().put("domainStrategy", "AsIs")
-            .put("rules", JSONArray().put(JSONObject().put("type", "field").put("inboundTag", JSONArray().put("tun-in")).put("outboundTag", "proxy")))
-        return JSONObject().put("log", JSONObject().put("loglevel", "warning"))
+
+        val inbound = JSONObject()
+            .put("tag", "tun-in")
+            .put("protocol", "tun")
+            .put("settings", tunSettings)
+
+        val routingRule = JSONObject()
+            .put("type", "field")
+            .put("inboundTag", JSONArray().put("tun-in"))
+            .put("outboundTag", proxyTag)
+
+        // libXray v3 reads the Android VpnService FD from the Xray config's root env.
+        // A process-level setenv alone is not the supported integration contract.
+        return JSONObject()
+            .put("env", JSONObject().put("xray.tun.fd", tunFd.toString()))
+            .put("log", JSONObject().put("loglevel", "warning"))
             .put("inbounds", JSONArray().put(inbound))
-            .put("outbounds", JSONArray().put(outbound).put(JSONObject().put("tag", "direct").put("protocol", "freedom")))
-            .put("routing", routing).toString()
+            .put("outbounds", outbounds)
+            .put("routing", JSONObject()
+                .put("domainStrategy", "AsIs")
+                .put("rules", JSONArray().put(routingRule)))
+            .toString()
     }
 }

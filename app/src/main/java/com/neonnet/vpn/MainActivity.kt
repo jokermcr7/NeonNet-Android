@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
         @JavascriptInterface fun disconnect() {
             startService(Intent(this@MainActivity, NeonVpnService::class.java).setAction(NeonVpnService.ACTION_STOP))
         }
-        @JavascriptInterface fun status(): String = JSONObject().put("connected", NeonVpnService.running).toString()
+        @JavascriptInterface fun status(): String = JSONObject().put("connected", NeonVpnService.running).put("message", NeonVpnService.lastMessage).toString()
         @JavascriptInterface fun copy(text: String) {
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
             clipboard.setPrimaryClip(android.content.ClipData.newPlainText("NeonNet", text))

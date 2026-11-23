@@ -231,16 +231,24 @@ const configs=()=>store.get('configs',[]);
 const selected=()=>store.get('selected',0);
 const current=()=>configs()[selected()] || configs()[0] || null;
 function parseVless(uri){
- const u=new URL(uri.trim());
- if(u.protocol!=='vless:') throw Error('فقط لینک VLESS پشتیبانی می‌شود');
- const q=u.searchParams;
- const cfg={id:crypto.randomUUID(),name:decodeURIComponent(u.hash.slice(1)||u.hostname),uri:uri.trim(),
-  protocol:'vless',host:u.hostname,port:Number(u.port),uuid:decodeURIComponent(u.username),
-  network:q.get('type')||'tcp',security:q.get('security')||'none',sni:q.get('sni')||'',
-  publicKey:q.get('pbk')||q.get('publicKey')||'',shortId:q.get('sid')||'',fingerprint:q.get('fp')||'chrome',
-  path:q.get('path')||'',serviceName:q.get('serviceName')||'',flow:q.get('flow')||'',created:Date.now()};
- if(!cfg.host||!cfg.port||!cfg.uuid) throw Error('لینک ناقص است: آدرس، پورت یا UUID وجود ندارد');
- if(cfg.security==='reality' && (!cfg.sni||!cfg.publicKey)) throw Error('Reality نیازمند SNI و Public Key است');
+ const raw=uri.trim();
+ if(!raw) throw Error('لینک کانفیگ خالی است');
+ const scheme=(raw.match(/^([a-z0-9+.-]+):\/\//i)||[])[1]?.toLowerCase();
+ const supported=['vless','vmess','trojan','ss','socks','hysteria2','hy2'];
+ if(!scheme||!supported.includes(scheme)) throw Error('پروتکل این لینک در نسخه فعلی پشتیبانی نمی‌شود');
+ let u;try{u=new URL(raw)}catch{throw Error('ساختار لینک کانفیگ معتبر نیست')}
+ const safeName=()=>{try{return decodeURIComponent((u.hash||'').slice(1))}catch{return ''}};
+ const cfg={id:crypto.randomUUID(),name:safeName()||u.hostname||scheme.toUpperCase(),uri:raw,
+  protocol:scheme,created:Date.now()};
+ if(scheme==='vless'){
+  const q=u.searchParams;
+  Object.assign(cfg,{host:u.hostname,port:Number(u.port),uuid:decodeURIComponent(u.username),
+   network:q.get('type')||'tcp',security:q.get('security')||'none',sni:q.get('sni')||'',
+   publicKey:q.get('pbk')||q.get('publicKey')||'',shortId:q.get('sid')||'',fingerprint:q.get('fp')||'chrome',
+   path:q.get('path')||'',serviceName:q.get('serviceName')||'',flow:q.get('flow')||''});
+  if(!cfg.host||!cfg.port||!cfg.uuid) throw Error('لینک VLESS ناقص است: آدرس، پورت یا UUID وجود ندارد');
+  if(cfg.security==='reality' && (!cfg.sni||!cfg.publicKey)) throw Error('Reality نیازمند SNI و Public Key است');
+ }
  return cfg;
 }
 function saveConfig(c){
@@ -261,8 +269,8 @@ function connectNow(){
 function importText(txt){
  const lines=txt.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
  let count=0,errors=[];
- lines.forEach(line=>{try{if(line.startsWith('vless://')){saveConfig(parseVless(line));count++}}catch(e){errors.push(e.message)}});
- if(count)toast(count+' کانفیگ وارد شد');else toast(errors[0]||'لینک VLESS پیدا نشد');
+ lines.forEach(line=>{try{if(/^(vless|vmess|trojan|ss|socks|hysteria2|hy2):\/\//i.test(line)){saveConfig(parseVless(line));count++}}catch(e){errors.push(e.message)}});
+ if(count)toast(count+' کانفیگ وارد شد');else toast(errors[0]||'لینک پشتیبانی‌شده‌ای پیدا نشد');
  if(count)go('servers');
 }
 function nav(){
@@ -288,7 +296,7 @@ function wireButtons(){
   if(/حذف همیشگی|حذف کانفیگ/.test(t)){b.addEventListener('click',()=>{let a=configs();a.splice(selected(),1);store.set('configs',a);store.set('selected',0);toast('کانفیگ حذف شد');go('servers')})}
   if(/اسکن با دوربین|شروع اسکن|باز کردن دوربین|اسکن QR کد|اسکن دوربین/.test(t)){b.addEventListener('click',e=>{e.preventDefault();startQr()})}
   if(/از گالری|انتخاب فایل/.test(t)){b.addEventListener('click',()=>$('#nn-file')?.click())}
-  if(/وارد کردن دستی/.test(t)){b.addEventListener('click',()=>{const v=prompt('لینک VLESS را وارد کن:');if(v)try{addUri(v.trim())}catch(e){toast(e.message)}})}
+  if(/وارد کردن دستی/.test(t)){b.addEventListener('click',()=>{const v=prompt('لینک کانفیگ را وارد کن:');if(v)try{addUri(v.trim())}catch(e){toast(e.message)}})}
   if(/تست سرعت|شروع تست|اجرای تست|شروع بنچمارک/.test(t)){b.addEventListener('click',runSpeed)}
   if(/بازنشانی/.test(t)){b.addEventListener('click',()=>{if(confirm('تنظیمات برنامه بازنشانی شود؟')){localStorage.clear();toast('تنظیمات بازنشانی شد')}})}
   if(/اشتراک.gذاری|اشتراک‌گذاری/.test(t)){b.addEventListener('click',()=>shareResults())}
@@ -365,7 +373,7 @@ function syncDashboard(){
  if(!location.pathname.endsWith('dashboard.html'))return;
  const c=current();const label=$$('main *').find(x=>x.children.length===0&&/آلمان|فرانکفورت|سرور انتخابی/.test(x.textContent||''));
  if(label&&c)label.textContent=c.name||c.host;
- if(native){try{const s=JSON.parse(native.status());const p=$('#power-btn');if(p){p.dataset.connected=s.connected?'1':'0';}}catch{}}
+ if(native){try{const s=JSON.parse(native.status());const p=$('#power-btn');if(p){p.dataset.connected=s.connected?'1':'0';p.setAttribute('aria-label',s.connected?'VPN connected':'VPN disconnected');}}catch{}}
 }
 
 async function loadInstalledApps(){
@@ -382,17 +390,17 @@ async function loadInstalledApps(){
 }
 
 function init(){
- nav();wireButtons();initImport();renderSavedServers();renderEditor();syncDashboard();loadInstalledApps();
+ nav();wireButtons();initImport();renderSavedServers();renderEditor();syncDashboard();loadInstalledApps();window.__neonStatusTimer=setInterval(syncDashboard,1200);
  // Persist toggles and text preferences across all pages.
  $$('input[type=checkbox],input[type=radio],select').forEach((el,i)=>{
    const k='ui:'+location.pathname+':'+(el.id||el.name||i);
    const saved=store.get(k,null);if(saved!==null){if(el.type==='checkbox'||el.type==='radio')el.checked=!!saved;else el.value=saved}
    el.addEventListener('change',()=>store.set(k,el.type==='checkbox'||el.type==='radio'?el.checked:el.value));
  });
- // VLESS text box / clipboard import.
+ // Share-link text box / clipboard import.
  $$('button').filter(b=>/کلیپ‌بورد|Paste|چسباندن/.test(b.innerText)).forEach(b=>b.onclick=async()=>{try{const v=native?.readClipboard?.() || await navigator.clipboard.readText();importText(v)}catch{toast('کلیپ‌بورد خالی است یا دسترسی ممکن نیست')}});
  // Allow a pasted URI in any text field via long-press paste or submit.
- $$('input,textarea').forEach(el=>el.addEventListener('change',()=>{if((el.value||'').trim().startsWith('vless://')){try{addUri(el.value.trim())}catch(e){toast(e.message)}}}));
+ $$('input,textarea').forEach(el=>el.addEventListener('change',()=>{if(/^(vless|vmess|trojan|ss|socks|hysteria2|hy2):\/\//i.test((el.value||'').trim())){try{addUri(el.value.trim())}catch(e){toast(e.message)}}}));
 }
 window.NeonApp={go,addUri,importText,connectNow,toast,store,configs,current,saveConfig,buildVless};
 document.addEventListener('DOMContentLoaded',init);
